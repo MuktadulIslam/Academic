@@ -62,7 +62,7 @@ void messageInput(string *message, string fileName) {
 
 void messageTo_Nx1024(string *str, unsigned int length) {
     int len = length%(1024/8), numberOfZero;
-    string s;
+    unsigned char zero = 0x00;
     if(len > 896/8) {
         unsigned int l = (2048 - 128)/8;
         // Padding 10000000
@@ -70,7 +70,7 @@ void messageTo_Nx1024(string *str, unsigned int length) {
         length++;
         // Padding 0's untill last 128's bit
         while(length < l) {
-            *str += '\0';
+            *str += zero;
             length++;
         }
     }
@@ -78,28 +78,26 @@ void messageTo_Nx1024(string *str, unsigned int length) {
         // Padding 10000000
         *str += 0x80;
         // Padding 0's untill last 128's bit
-        for(int i=len+1 ; i<(896/8) ; i++) *str += '\0';
+        for(int i=len+1 ; i<(896/8) ; i++) *str += zero;
     }
 
     // Padding last 128's bit with the binary value of the length of the string
     union  binary_representation {
-        unsigned int n;
-//        unsigned int n[8] = {};
-        unsigned char ch[16];
+        unsigned long long int n;
+        unsigned char ch[16] = {};
     } x;
 
-    x.n = length;
+    x.n = length*8;
     for(int i=15 ; i>=0 ; --i) {
         *str += x.ch[i];
     }
-    cout << endl;
 }
 
 word sigma0_function(word w) {
-    return ((w >> 1) | (w << 64-1)) ^ ((w >> 8) | (w << 64-8)) ^ (w << 7);
+    return ((w >> 1) | (w << 64-1)) ^ ((w >> 8) | (w << 64-8)) ^ (w >> 7);
 }
 word sigma1_function(word w) {
-    return ((w >> 19) | (w << 64-19)) ^ ((w >> 61) | (w << 64-61)) ^ (w << 6);
+    return ((w >> 19) | (w << 64-19)) ^ ((w >> 61) | (w << 64-61)) ^ (w >> 6);
 }
 word sigmaA_function(word w) {
     return ((w >> 28) | (w << 64-28)) ^ ((w >> 34) | (w << 64-34)) ^ ((w >> 39) | (w << 64-39));
@@ -114,7 +112,6 @@ word maj_function(word a, word b, word c){
     return ( (a & b) ^ (b & c) ^ (c & a) );
 }
 
-
 void wordExpantion(unsigned char str[]) {
     union  binary_representation {
         word w;
@@ -128,14 +125,11 @@ void wordExpantion(unsigned char str[]) {
             x.ch[7-j] = str[i*8 + j];
 
         W[i] = x.w;
-//        cout << hex << W[i] << endl;
     }
 
     for(int i=16 ; i<80 ; i++) {
         W[i] = sigma1_function(W[i-2]) + W[i-7] + sigma0_function(W[i-15]) + W[i-16];
-//        cout << hex << W[i] << endl;
     }
-//    cout << endl;
 }
 
 void SHA_512(unsigned char str[], int lenght, word hashValue[8]) {
@@ -159,23 +153,26 @@ void SHA_512(unsigned char str[], int lenght, word hashValue[8]) {
 //
 //    }
 
+    for(i=0 ; i<8 ; i++)
+        tempHV[i] = hashValue[i];
     for(roundNumber=0 ; roundNumber<80 ; roundNumber++) {
-        for(i=0 ; i<8 ; i++)
-            tempHV[i] = hashValue[i];
 
-        temp1 = ch_function(hashValue[4], hashValue[5], hashValue[6]) ^ sigmaE_function(hashValue[4]) ^
-            W[roundNumber] ^ roundConstants[roundNumber] ^ hashValue[7];
-        temp2 = sigmaA_function(hashValue[0]) ^ maj_function(hashValue[0], hashValue[1], hashValue[2]) ^ temp1;
+        temp1 = ch_function(hashValue[4], hashValue[5], hashValue[6]) + sigmaE_function(hashValue[4]) +
+            W[roundNumber] + roundConstants[roundNumber] + hashValue[7];
+        temp2 = sigmaA_function(hashValue[0]) + maj_function(hashValue[0], hashValue[1], hashValue[2]) + temp1;
 
-        hashValue[7] = hashValue[6] + tempHV[7];
-        hashValue[6] = hashValue[5] + tempHV[6];
-        hashValue[5] = hashValue[4] + tempHV[5];
-        hashValue[4] = hashValue[3] + temp1 + tempHV[4];
-        hashValue[3] = hashValue[2] + tempHV[3];
-        hashValue[2] = hashValue[1] + tempHV[2];
-        hashValue[1] = hashValue[0] + tempHV[1];
-        hashValue[0] = temp2 + tempHV[0];
+        hashValue[7] = hashValue[6];
+        hashValue[6] = hashValue[5];
+        hashValue[5] = hashValue[4];
+        hashValue[4] = hashValue[3] + temp1;
+        hashValue[3] = hashValue[2];
+        hashValue[2] = hashValue[1];
+        hashValue[1] = hashValue[0];
+        hashValue[0] = temp2;
     }
+    for(i=0 ; i<8 ; i++)
+            hashValue[i] += tempHV[i];
+
 }
 
 int main(void) {
@@ -186,13 +183,9 @@ int main(void) {
     messageTo_Nx1024(&mess, mess.length());
     int length = mess.length();
     unsigned char message[length+1];
-    cout << length <<  endl;
     for(int i=0 ; i<length ; i++) {
         message[i] = mess[i];
-        printf("%x  ", (int)mess[i]);
-        if((i+1) %8 == 0) cout << endl;
     }
-//    cout << endl;
 
     word hash_value[8];
     SHA_512(message, length, hash_value);
