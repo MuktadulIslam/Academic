@@ -91,7 +91,6 @@ void messageTo_Nx1024(string *str, unsigned int length) {
     x.n = length;
     for(int i=15 ; i>=0 ; --i) {
         *str += x.ch[i];
-        cout << hex << x.ch[i] << "  ";
     }
     cout << endl;
 }
@@ -190,7 +189,8 @@ int main(void) {
     cout << length <<  endl;
     for(int i=0 ; i<length ; i++) {
         message[i] = mess[i];
-//        cout << hex << mess[i] << "  ";
+        printf("%x  ", (int)mess[i]);
+        if((i+1) %8 == 0) cout << endl;
     }
 //    cout << endl;
 
