@@ -181,7 +181,11 @@ string SHA_512(string str)
 
     for(lli i=0; i<input1024.length(); i+=1024, chunk_num++) blocks[chunk_num]= input1024.substr(i, 1024);
 
-    for(int i=0 ; i<input1024.length() ; i++) cout << hex << input1024[i] << "  ";
+    for(int i=0 ; i<input1024.length() ; i++){
+        cout << hex << input1024[i];
+        if((i+1)%8 == 0) cout << "   ";
+        if((i+1) % 64 == 0) cout << endl;
+    }
     cout << endl;
 
     lli A = 0x6a09e667f3bcc908;
