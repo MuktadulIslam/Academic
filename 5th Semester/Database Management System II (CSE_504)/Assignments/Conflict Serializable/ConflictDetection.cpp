@@ -167,7 +167,7 @@ int main(void) {
     string inputStr;
 
     // Read from the text file
-    ifstream readFile("input.txt");
+    ifstream readFile("input2.txt");
     while (getline (readFile, inputStr)) {
         make_transaction(inputStr);
     }
