@@ -1,0 +1,30 @@
+.topnav {
+    overflow: hidden;
+    background-color: rgb(124, 212, 234);
+    background-attachment: fixed;
+
+    font-family: 'Pacifico';
+}
+
+.topnav a {
+  float: left;
+  color: white;
+  text-align: center;
+  padding: 17px 35px;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+.topnav a.active {
+  background-color: #07b4c1;
+  color: white;
+}
+
+.topnav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.topnav li{
+    display: inline;
+}

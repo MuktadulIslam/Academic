@@ -77,11 +77,11 @@ void get_data_from_row(string line) {
     string str;
     stringstream s(line);
 
-    int sex, type, result;
+    int gender, type, result;
     float time, age, warts,area;
 
     // Breaking lines
-    getline(s, str, ','); sex = (int) stringToNumber(str);
+    getline(s, str, ','); gender = (int) stringToNumber(str);
     getline(s, str, ','); age = stringToNumber(str);
     getline(s, str, ','); time = stringToNumber(str);
     getline(s, str, ','); warts = stringToNumber(str);
@@ -91,7 +91,7 @@ void get_data_from_row(string line) {
 
 
     if(result == YES) {
-        if(sex == MALE) male_yes++;
+        if(gender == MALE) male_yes++;
         else female_yes++;
 
 
@@ -106,7 +106,7 @@ void get_data_from_row(string line) {
         num_yes++;
     }
     else {
-        if(sex == MALE) male_no++;
+        if(gender == MALE) male_no++;
         else female_no++;
 
 
@@ -201,11 +201,11 @@ float get_prob(int total_mORf, int total_mANDf, int total_in_type, int total_all
 }
 
 
-float get_provability(int sex, int type, int result, float time, float age, float warts, float area) {
+float get_provability(int gender, int type, int result, float time, float age, float warts, float area) {
     float provability, prob_age, prob_time, prob_warts, prob_area;
 
     if(result == YES) {
-        int sex_yes = male_yes+female_yes;
+        int gender_yes = male_yes+female_yes;
         int type_yes = type1_yes+type2_yes+type3_yes;
 
         // Getting Provability for numberical value
@@ -216,23 +216,23 @@ float get_provability(int sex, int type, int result, float time, float age, floa
 
 
         // Getting Provability for categorical value
-        if(sex == MALE) {
-            if(type == 1) provability = get_prob(male_yes, sex_yes, type1_yes, type_yes);
-            else if(type == 2) provability = get_prob(male_yes, sex_yes, type2_yes, type_yes);
-            else provability = get_prob(male_yes, sex_yes, type3_yes, type_yes);
+        if(gender == MALE) {
+            if(type == 1) provability = get_prob(male_yes, gender_yes, type1_yes, type_yes);
+            else if(type == 2) provability = get_prob(male_yes, gender_yes, type2_yes, type_yes);
+            else provability = get_prob(male_yes, gender_yes, type3_yes, type_yes);
         }
 
         else {
-            if(type == 1) provability = get_prob(female_yes, sex_yes, type1_yes, type_yes);
-            else if(type == 2) provability = get_prob(female_yes, sex_yes, type2_yes, type_yes);
-            else provability = get_prob(female_yes, sex_yes, type3_yes, type_yes);
+            if(type == 1) provability = get_prob(female_yes, gender_yes, type1_yes, type_yes);
+            else if(type == 2) provability = get_prob(female_yes, gender_yes, type2_yes, type_yes);
+            else provability = get_prob(female_yes, gender_yes, type3_yes, type_yes);
         }
 
         return provability*prob_age*prob_area*prob_time*prob_warts;
     }
 
     else {
-        int sex_no = male_no+female_no;
+        int gender_no = male_no+female_no;
         int type_no = type1_no+type2_no+type3_no;
 
         // Getting Provability for numberical value
@@ -242,16 +242,16 @@ float get_provability(int sex, int type, int result, float time, float age, floa
         prob_area = getProb_for_numerical_data(area, mean_area_no, SD_area_no);
 
         // Getting Provability for categorical value
-        if(sex == MALE) {
-            if(type == 1) provability = get_prob(male_no, sex_no, type1_no, type_no);
-            else if(type == 2) provability = get_prob(male_no, sex_no, type2_no, type_no);
-            else provability = get_prob(male_no, sex_no, type3_no, type_no);
+        if(gender == MALE) {
+            if(type == 1) provability = get_prob(male_no, gender_no, type1_no, type_no);
+            else if(type == 2) provability = get_prob(male_no, gender_no, type2_no, type_no);
+            else provability = get_prob(male_no, gender_no, type3_no, type_no);
         }
 
         else {
-            if(type == 1) provability = get_prob(female_no, sex_no, type1_no, type_no);
-            else if(type == 2) provability = get_prob(female_no, sex_no, type2_no, type_no);
-            else provability = get_prob(female_no, sex_no, type3_no, type_no);
+            if(type == 1) provability = get_prob(female_no, gender_no, type1_no, type_no);
+            else if(type == 2) provability = get_prob(female_no, gender_no, type2_no, type_no);
+            else provability = get_prob(female_no, gender_no, type3_no, type_no);
         }
 
         return provability*prob_age*prob_area*prob_time*prob_warts;
@@ -269,7 +269,7 @@ float getAccuracy(int roundNo, string filename) {
     int true_positive = 0, false_positive = 0;
     int true_negative = 0, false_negative = 0;
 
-    int sex, type, result;
+    int gender, type, result;
     float time, age, warts,area;
     int start = (roundNo-1)*9;
     string line;
@@ -288,7 +288,7 @@ float getAccuracy(int roundNo, string filename) {
                 stringstream s(line);
 
                 // Breaking lines
-                getline(s, str, ','); sex = (int) stringToNumber(str);
+                getline(s, str, ','); gender = (int) stringToNumber(str);
                 getline(s, str, ','); age = stringToNumber(str);
                 getline(s, str, ','); time = stringToNumber(str);
                 getline(s, str, ','); warts = stringToNumber(str);
@@ -297,8 +297,8 @@ float getAccuracy(int roundNo, string filename) {
                 getline(s, str, ','); result = (int) stringToNumber(str);
 
 
-                float prob_yes = get_provability(sex, type, YES, time, age, warts, area);
-                float prob_no = get_provability(sex, type, NO, time, age, warts, area);
+                float prob_yes = get_provability(gender, type, YES, time, age, warts, area);
+                float prob_no = get_provability(gender, type, NO, time, age, warts, area);
 
                 if(prob_yes > prob_no) {
                     if(result == YES) true_positive++;

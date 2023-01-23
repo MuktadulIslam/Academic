@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hanoi</title>
+
+    <style>
+        .class1{
+            width: 30vw;
+            height: 45vh;
+            border: 2px solid black;
+            margin-top: 2vh;
+            margin-left: 1.2vw;
+            margin-right: 1.2vw;
+            float: left;
+            background-color: rgb(221, 235, 240);
+
+            display: flex;
+            flex-direction: column-reverse;
+        }
+        .class2{
+            width: 24vw;
+            height: 8vh;
+            border: 2px solid black;
+            border-radius: 2vw;
+            margin-bottom: 0vh;
+            margin-top: 0.8vh;
+            margin-right: auto;
+            margin-left: auto;
+            background-color: rgb(131, 167, 240);
+
+            font-size: 3vh;
+            text-align: center;
+            color: black;
+        }
+        .class3{
+            float: left;
+            width: 30vw;
+            height: 5vh;
+            border: 2px solid black;
+            margin-left: 1.2vw;
+            margin-right: 1.2vw;
+            margin-top: 0vh;
+            margin-bottom: 0vh;
+
+            float: left;
+            background-color: rgb(91, 173, 200);
+
+            font-size: 3vh;
+            text-align: center;
+            color: black;
+        }
+        .class4{
+            float: left;
+            margin-top: 2vh;
+            margin-left: 1.2vw;
+            margin-right: 1.2vw;
+
+            width: 30vw;
+            height: 10vh;
+            background-color: rgb(255, 171, 229);
+            border: 2px solid black;
+            border-radius: 1vw;
+
+            font-size: 3vh;
+            text-align: center;
+            color: black;
+        }
+        
+        .class5{
+            clear: left;
+            margin-top: 5vh;
+            margin-left: auto;
+            margin-right: auto;
+
+            width: 50vw;
+            height: 7vh;
+        }
+
+        .class6{
+            float: left;
+            margin-top: 5vh;
+            margin-left: 1.2vw;
+            margin-right: 1.2vw;
+
+            width: 20vw;
+            height: 7vh;
+            background-color: rgb(255, 171, 229);
+            border: 2px solid black;
+            border-radius: 1vw;
+
+            font-size: 2.5vh;
+            text-align: center;
+            color: rgb(255, 255, 255);
+        }
+    </style>
+</head>
+<body onload="reload()">
+    <div id = "div1" class="class1">
+        <p class="class2" id = "puzzel1"></p>
+        <p class="class2" id = "puzzel2"></p>
+        <p class="class2" id = "puzzel3"></p>
+        <p class="class2" id = "puzzel4"></p>
+
+    </div>
+
+    <div id = "div2" class="class1">
+    </div>
+
+    <div id = "div3" class="class1">
+    </div>
+
+
+
+    <!-- levels -->
+    <div>
+        <p class="class3">1</p>
+        <p class="class3">2</p>
+        <p class="class3">3</p>
+    </div>
+
+
+
+
+    <!-- movement -->
+    <div>
+        <button class="class4" type="button"  onclick="oneToTwo()">1->2</button>
+        <button class="class4" type="button" onclick="twoToThree()">2->3</button>
+        <button class="class4" type="button" onclick="threeToOne()">3->1</button>
+    </div>
+    <div>
+        <button class="class4" type="button" onclick="oneToThree()">1->3</button>
+        <button class="class4" type="button" onclick="twoToOne()">2->1</button>
+        <button class="class4" type="button" onclick="threeToTwo()">3->2</button>
+    </div>
+
+
+
+    <!-- reset and check -->
+    <div class="class5">
+        <button style="background-color: rgb(255, 49, 49);" class="class6" type="button" onclick="checkResult()">Submit Result</button>
+        <button style="background-color: rgb(45, 255, 45);" class="class6" type="button" onclick="window.location.reload()">Start New Game</button>
+    </div>
+
+
+
+    <script>
+        let arr = [1,2,3,4];
+        shuffle(numbers);
+        console.log(numbers);
+
+        function oneToTwo(){
+            let div1 = document.getElementById("div1");
+            let box = div1.lastElementChild;
+            div1.removeChild(box);
+            document.getElementById("div2").appendChild(box);
+        }
+        function oneToThree(){
+            let div1 = document.getElementById("div1");
+            let box = div1.lastElementChild;
+            div1.removeChild(box);
+            document.getElementById("div3").appendChild(box);
+        }
+
+
+        function twoToOne(){
+            let div1 = document.getElementById("div2");
+            let box = div1.lastElementChild;
+            div1.removeChild(box);
+            document.getElementById("div1").appendChild(box);
+        }
+        function twoToThree(){
+            let div1 = document.getElementById("div2");
+            let box = div1.lastElementChild;
+            div1.removeChild(box);
+            document.getElementById("div3").appendChild(box);
+        }
+
+
+        function threeToOne(){
+            let div1 = document.getElementById("div3");
+            let box = div1.lastElementChild;
+            div1.removeChild(box);
+            document.getElementById("div1").appendChild(box);
+        }
+        function threeToTwo(){
+            let div1 = document.getElementById("div3");
+            let box = div1.lastElementChild;
+            div1.removeChild(box);
+            document.getElementById("div2").appendChild(box);
+        }
+
+        function reload() {
+            array = shuffle(arr);
+            for (let i = 0, len = array.length ; i <len ; i++) {
+                let id = "puzzel" + (i+1);
+                document.getElementById(id).innerHTML = array[i];
+                if(arr[i] == 1)
+                    document.getElementById(id).style.width = "10vw";
+                else if(arr[i] == 2)
+                    document.getElementById(id).style.width = "15vw";
+                else if(arr[i] == 3)
+                    document.getElementById(id).style.width = "20vw";
+                else
+                    document.getElementById(id).style.width = "25vw";
+            }
+            
+        }
+
+        function shuffle(array) {
+            while(array[0] === 1 && array[1] === 2 && array[2] === 3 && array[3] === 4){
+               for (let i = array.length - 1; i > 0; i--) {
+                    let j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+            return array; 
+        }
+
+        function checkResult() {
+            let flag = 0;
+            for(let i=0 ; i<3 ; i++) {
+                let childs = document.getElementById("div" + (i+1)).children;
+                for (let i = 0, len = childs.length ; i <len ; i++) {
+                    if(childs[i].innerHTML != (4-i)) {
+                        flag = -1;
+                        break;
+                    }
+                    else flag = 1;
+                }
+                if(flag == 1) {
+                    alert("Congratulation!!! You won the game");
+                    window.location.reload();
+                    return;
+                }
+            }
+            alert("You've failed miserably");
+            window.location.reload();
+        }
+
+    </script>
+</body>
+</html>
