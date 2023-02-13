@@ -441,6 +441,11 @@ int main(void) {
     for(int i=0 ; i<length ; i++) {
         message[i] = mess[i];
     }
+    // unsigned char hex[16]
+    /* for(int i=0 ; i<16 ; i++) {
+        hex[i] = x[i]
+    */
+
 
 
     keyExpantion(k);

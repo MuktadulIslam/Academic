@@ -148,8 +148,8 @@
 
     <script>
         let arr = [1,2,3,4];
-        shuffle(numbers);
-        console.log(numbers);
+        shuffle(arr);
+        console.log(arr);
 
         function oneToTwo(){
             let div1 = document.getElementById("div1");
@@ -220,24 +220,24 @@
         }
 
         function checkResult() {
-            let flag = 0;
+            let flag = 1;
             for(let i=0 ; i<3 ; i++) {
+                flag = 1;
                 let childs = document.getElementById("div" + (i+1)).children;
-                for (let i = 0, len = childs.length ; i <len ; i++) {
+                for (let i = 0, len= childs.length; i<len ; i++) {
                     if(childs[i].innerHTML != (4-i)) {
+                        alert("You've failed miserably");
+                        window.location.reload();
                         flag = -1;
                         break;
                     }
-                    else flag = 1;
-                }
-                if(flag == 1) {
-                    alert("Congratulation!!! You won the game");
-                    window.location.reload();
-                    return;
+
                 }
             }
-            alert("You've failed miserably");
-            window.location.reload();
+            if(flag == 1) {
+                alert("Congratulation!!! You won the game");
+                window.location.reload();
+            }
         }
 
     </script>
