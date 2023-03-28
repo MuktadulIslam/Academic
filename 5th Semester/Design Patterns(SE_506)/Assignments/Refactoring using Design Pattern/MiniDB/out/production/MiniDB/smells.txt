@@ -1,5 +1,0 @@
-1. Lazy class smell  = Errors Class
-2. Switch case smell in getDatabasePath() methods in 'RegistryFile'
-3. Applied Singleton Pattern in 'RegistryFile' Class.
-4. Applied Factory Pattern  in addDbEntry() methods in 'RegistryFile' class.
-5. Applied 'Strategy Pattern' in command_line_files.CLI to remove Switch Case smell.

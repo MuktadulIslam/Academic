@@ -45,7 +45,7 @@ public class RegistryFile extends XMLFiles {
      * @throws ParserConfigurationException
      */
     private Element addDbEntry(String name, String disabled) {
-        DatabaseElementFactory databaseElementFactory = new DatabaseElementFactory();
+        DatabaseElementBuilder databaseElementFactory = new DatabaseElementBuilder();
         Element databaseElem = databaseElementFactory.createDatabaseElement(this, name, disabled);
 
         return databaseElem;

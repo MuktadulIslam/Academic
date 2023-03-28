@@ -12,6 +12,20 @@ public class CLI {
 
     static DatabaseFile CurrentDb;
     static RegistryFile registry;
+    ArrayList <ArgumentStrategy> strategies = new <ArgumentStrategy>ArrayList();
+    {
+        strategies.add(new AddArg());
+        strategies.add(new DeleteArg());
+        strategies.add(new DropArg());
+        strategies.add(new HelpArg());
+        strategies.add(new InfoArg());
+        strategies.add(new ListArg());
+        strategies.add(new NewArg());
+        strategies.add(new ReadArg());
+        strategies.add(new SchemaArg());
+        strategies.add(new UpdateArg());
+        strategies.add(new UseArg());
+    }
 
     public void startCLI(){
         System.out.println(Constants.HEADING);
@@ -41,21 +55,8 @@ public class CLI {
 
 
     void clientInput(String input) {
-        ArrayList <ArgumentStrategy> strategies = new <ArgumentStrategy>ArrayList();
-        strategies.add(new AddArg());
-        strategies.add(new DeleteArg());
-        strategies.add(new DropArg());
-        strategies.add(new HelpArg());
-        strategies.add(new InfoArg());
-        strategies.add(new ListArg());
-        strategies.add(new NewArg());
-        strategies.add(new ReadArg());
-        strategies.add(new SchemaArg());
-        strategies.add(new UpdateArg());
-        strategies.add(new UseArg());
-
+        
         String[] cmdArgs = input.split(" ");
-
         for (ArgumentStrategy strategy : strategies) {
             if (strategy.isEqual(cmdArgs[0])) {
                 strategy.executeCMD(cmdArgs[1]);
