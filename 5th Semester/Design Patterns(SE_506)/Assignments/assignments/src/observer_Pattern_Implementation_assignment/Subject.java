@@ -5,11 +5,11 @@ public abstract class Subject {
     ArrayList<Observer> observerArray = new <Observer> ArrayList();
     public void attach(Observer observer) {
         observerArray.add(observer);
-        System.out.println(observer.getClass().getName() + " is successfully attach in " + this.getClass().getName());
+        System.out.println(observer.getClass().getSimpleName() + " is successfully attach in " + this.getClass().getSimpleName());
     }
     public void detach(Observer observer) {
         observerArray.remove(observer);
-        System.out.println(observer.getClass().getName() + " is successfully attach in " + this.getClass().getName());
+        System.out.println(observer.getClass().getSimpleName() + " is successfully attach in " + this.getClass().getSimpleName());
     }
 
     protected void notifyA(String information){

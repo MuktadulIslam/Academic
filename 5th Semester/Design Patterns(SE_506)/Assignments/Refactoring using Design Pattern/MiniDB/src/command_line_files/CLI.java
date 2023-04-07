@@ -55,7 +55,7 @@ public class CLI {
 
 
     void clientInput(String input) {
-        
+
         String[] cmdArgs = input.split(" ");
         for (ArgumentStrategy strategy : strategies) {
             if (strategy.isEqual(cmdArgs[0])) {
