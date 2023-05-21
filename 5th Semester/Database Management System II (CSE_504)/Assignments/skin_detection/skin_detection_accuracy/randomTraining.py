@@ -1,14 +1,15 @@
 import cv2
 import random
 
-for j in range(1):
+for j in range(10):
     skinArray = [[[0 for k in range(256)] for j in range(256)] for i in range(256)]
     nonSkinArray = [[[0 for k in range(256)] for j in range(256)] for i in range(256)]
     totalRGBinSkin = 0;
     totalRGBinNonSkin = 0;
     r, g, b = 0, 0, 0
 
-    statingImageNo = random.randint(0, 554)
+    statingImageNo = j*55
+    # statingImageNo = random.randint(0, 554)
     for i in range(500):
         print("Training no ", j, "   image on", i)
         nonSkinImageName = "/home/muktadul/Documents/Python Programes/myTest/DBMS-2/skin_detection/ibtd/nonSkin/" + str((i + statingImageNo) % 555).zfill(4) + ".jpg"

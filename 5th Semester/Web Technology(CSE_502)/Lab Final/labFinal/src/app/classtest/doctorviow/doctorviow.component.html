@@ -1,0 +1,19 @@
+<div style="margin: 20px;">
+    <div style="border: 2px solid black; align-items: center; margin: 10px 0px;">
+        <div style="text-align: center;">
+            <h2>Doctors List</h2>
+        </div>
+    </div>
+
+    <div>
+        <div  *ngFor="let doctor of doctors">
+            <div style="height:10% px; width: 30%; display: inline-block;">
+                <p>{{doctor.name}} , {{doctor.hospitalName}}</p>
+            </div>
+            <div style="height:10% px; width: 30%; display: inline-block;">
+                <button class="btn btn-success" (click)="bookAppointment(doctor.name)"> Book Appointmnet</button>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,29 @@
+<div style="margin: 40px;">
+    <div style="padding: 10px;">
+        <div style="display: inline-block; width: 20%; height: 15%;">Name: </div>
+        <div style="display: inline-block; width: 20%; height: 15%;"> <input type="text" name="name" id="name" [(ngModel)]="patientName"> </div>
+        <br>
+    </div>
+
+    <div style="padding: 10px;">
+        <div style="display: inline-block; width: 20%; height: 15%;">Contract: </div>
+        <div style="display: inline-block; width: 20%; height: 15%;"> <input type="text" name="contract" id="contract" [(ngModel)]="contract"> </div>
+        <br>
+    </div>
+
+    <div style="padding: 10px;">
+        <div style="display: inline-block; width: 20%; height: 15%;">Date: </div>
+        <div style="display: inline-block; width: 20%; height: 15%;"> <input type="date" name="date" id="date" [(ngModel)] ="date"> </div>
+        <br>
+    </div>
+
+    <div style="padding: 10px;">
+        <div style="display: inline-block; width: 20%; height: 15%;">
+            <button class="btn btn-success" (click)="confirmAppointment()"> Save</button>
+        </div>
+        <div style="display: inline-block; width: 20%; height: 15%;">
+            <button class="btn btn-danger" (click)="cancelAppointment()">Cancel</button>
+        </div>
+        <br>
+    </div>
+</div>

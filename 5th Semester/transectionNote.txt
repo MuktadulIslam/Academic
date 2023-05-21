@@ -1,0 +1,31 @@
+Note:
+i) read to write then ->
+ii) write to write then ->
+iii) write to read then ->
+
+iv) If there is cycle in the Precedence graph then it will be conflict non-serializable, else it will be conflict serializable.
+v) If it is serializable, then make a serial by picking up nodes one by one  which indegree is 0.
+
+
+
+   x		y	   z
+-------  -------  -------
+   w1	      r1      r3
+   r2       r3      w1
+   r1       w1      w2
+   w1       w2
+
+Precedence graph:
+
+
+
+T1 ---------> T2
+ <		 >
+  \         /
+   \       /
+    \     /
+     \ T3
+it's conflict serializable.the equivalent serial schedule:  T3->T1->T2
+
+
+for more info: https://www.scaler.com/topics/dbms/serializability-in-dbms/

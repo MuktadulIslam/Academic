@@ -1,0 +1,53 @@
+#container {
+    position: relative;
+
+    width: 70%;
+    
+    height: 810px;
+}
+
+
+.left{
+    float: left;
+
+    width: 70%;
+    height: 30%;
+}
+.lLeft{
+    display: flex;
+    float: left;
+    
+    align-items: center;
+    padding-left: 8%;
+    /* justify-content: center; */
+
+    width: 22%;
+    height: 33%;
+}
+.lRight{
+    display: flex;
+    float: left;
+    
+    align-items: center;
+    /* justify-content: center; */
+
+    width: 70%;
+    height: 33%;
+}
+
+
+.right{
+    float: left;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 30%;
+    height: 30%;
+}
+
+img{
+    height: 100%;
+    width: 100%;
+}
+
