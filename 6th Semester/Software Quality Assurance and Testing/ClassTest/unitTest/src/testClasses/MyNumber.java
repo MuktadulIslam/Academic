@@ -1,31 +1,42 @@
 package testClasses;
 
-public class MyMath {
+public class MyNumber {
     public boolean isPrime(int number) {
-        // Handle special cases for numbers less than 2
-        if (number <= 1) {
+        try {
+            // Handle special cases for numbers less than 2
+            if (number < 2) {
+                throw new InvalidNumberException("Invalid number: Number cannot be less than 2.");
+            }
+            // Check for divisibility from 2 to the square root of the number
+            for (int i = 2; i <= Math.sqrt(number); i++) {
+                if (number % i == 0) {
+                    return false; // It's divisible, so not prime
+                }
+            }
+            return true; // It's prime
+        }catch (InvalidNumberException error){
+            System.out.println(error);
             return false;
         }
-        // Check for divisibility from 2 to the square root of the number
-        for (int i = 2; i <= Math.sqrt(number); i++) {
-            if (number % i == 0) {
-                return false; // It's divisible, so not prime
-            }
-        }
-        return true; // It's prime
     }
     public long calculateFactorial(int num) {
-        if(num<0) return -1;
-        else if (num <= 1) {
-            return 1; // Factorial of 0 and 1 is 1
-        }
+        try {
+            if (num < 0) {
+                throw new InvalidNumberException("Invalid number: Number cannot be negative.");
+            } else if (num <= 1) {
+                return 1; // Factorial of 0 and 1 is 1
+            }
 
-        long factorial = 1;
-        for (int i = 2; i <= num; i++) {
-            factorial *= i;
-        }
+            long factorial = 1;
+            for (int i = 2; i <= num; i++) {
+                factorial *= i;
+            }
 
-        return factorial;
+            return factorial;
+        }catch (InvalidNumberException error){
+            System.out.println(error);
+            return -1;
+        }
     }
 
     public int calculateGCD(int num1, int num2) {
@@ -55,26 +66,32 @@ public class MyMath {
     }
 
     public int calculateLCM(int num1, int num2) {
-        int l, s, r;
-        if(num1==0 || num2==0) return 0;
-        else if(num1<0 || num2<0) return -1;
+        try {
+            int l, s, r;
+            if (num1 < 0 || num2 < 0) {
+                throw new InvalidNumberException("Invalid number: Numbers cannot be negative.");
+            }
+            else if (num1 == 0 || num2 == 0) return 0;
 
-        if(num1 > num2) {
-            l = num1;
-            s = num2;
-        }
-        else  {
-            l = num2;
-            s = num1;
-        }
+            if (num1 > num2) {
+                l = num1;
+                s = num2;
+            } else {
+                l = num2;
+                s = num1;
+            }
 
-        r = l%s;
-        while (r!=0) {
-            l = s;
-            s = r;
-            r = l%s;
+            r = l % s;
+            while (r != 0) {
+                l = s;
+                s = r;
+                r = l % s;
+            }
+            return num1 * num2 / s; // Ensure the result is positive
+        }catch (InvalidNumberException error){
+            System.out.println(error);
+            return -1;
         }
-        return num1*num2/s; // Ensure the result is positive
     }
 
     public <T extends Number> double abs(T number) {
