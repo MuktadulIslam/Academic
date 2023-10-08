@@ -1,34 +1,31 @@
 package testClasses;
 
 public class ResultCalculator {
-    public double getGPA(int score, int total_marks) {
-        try {
-            if (score > total_marks) {
-                throw new InvalidNumberException("Invalid Score or Total Marks: Score cannot be greater than Total Marks.");
-            }
-            int scoreIn100 = (int) new MyNumber().roundUp(score * 100 / total_marks);
-            double gpa;
+    public double getGPA(double score, int total_marks) {
+        int s = (int) Math.ceil(score);
 
-            if (scoreIn100 >= 80) gpa = 4.00;
-            else if (scoreIn100 >= 75) gpa = 3.75;
-            else if (scoreIn100 >= 70) gpa = 3.50;
-            else if (scoreIn100 >= 65) gpa = 3.25;
-            else if (scoreIn100 >= 60) gpa = 3.00;
-            else if (scoreIn100 >= 55) gpa = 2.75;
-            else if (scoreIn100 >= 50) gpa = 2.50;
-            else if (scoreIn100 >= 45) gpa = 2.25;
-            else if (scoreIn100 >= 40) gpa = 2.00;
-            else gpa = 0.00;
-
-            return gpa;
-        }catch (InvalidNumberException error){
-            System.out.println(error);
-            return -1.00;
+        if (score > total_marks) {
+            throw new InvalidNumberException("Invalid Score or Total Marks: Score cannot be greater than Total Marks.");
         }
+        int scoreIn100 = (int) new MyNumber().roundUp(score * 100 / total_marks);
+        double gpa;
+
+        if (scoreIn100 >= 80) gpa = 4.00;
+        else if (scoreIn100 >= 75) gpa = 3.75;
+        else if (scoreIn100 >= 70) gpa = 3.50;
+        else if (scoreIn100 >= 65) gpa = 3.25;
+        else if (scoreIn100 >= 60) gpa = 3.00;
+        else if (scoreIn100 >= 55) gpa = 2.75;
+        else if (scoreIn100 >= 50) gpa = 2.50;
+        else if (scoreIn100 >= 45) gpa = 2.25;
+        else if (scoreIn100 >= 40) gpa = 2.00;
+        else gpa = 0.00;
+
+        return gpa;
     }
 
-    public String getGrade(int score, int total_marks) {
-        try {
+    public String getGrade(double score, int total_marks) {
+            int s = (int) Math.ceil(score);
             if (score > total_marks) {
                 throw new InvalidNumberException("Invalid Score or Total Marks: Score cannot be greater than Total Marks.");
             }
@@ -47,9 +44,5 @@ public class ResultCalculator {
             else grade = "F";
 
             return grade;
-        }catch (InvalidNumberException error){
-            System.out.println(error);
-            return "-X";
-        }
     }
 }

